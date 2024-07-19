@@ -13,7 +13,7 @@
                     <form @submit.prevent="submitCart">
                         <div class="grid gap-6 md:grid-cols-2">
                             <div>
-                                <div v-if="menus && menus.length > 0" class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 p-2 bg-gray-100 rounded-lg shadow">
+                                <div v-if="menus && menus.length > 0" class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 p-4 bg-gray-100 rounded-lg shadow">
                                     <!-- Menü-Items als Buttons -->
                                     <button
                                         v-for="menu in menus"
@@ -37,24 +37,27 @@
                                 <!-- Warenkorb-Anzeige -->
                                 <div class="mt-8"
                                      :class="{'p-4 bg-gray-100 rounded-lg shadow': cart.length > 0}">
-                                    <div v-for="(item, index) in cart" :key="item.id" class="flex items-center justify-between py-2 border-b border-gray-300">
-                                        <div class="flex flex-col md:flex-row md:items-center">
-                                            <span class="font-bold text-gray-800 text-lg mr-2">{{ item.name }}</span>
-                                            <span class="text-gray-600">{{ item.quantity }} Stück(e)</span>
-                                            <span class="text-green-500 font-bold ml-2">{{ item.price * item.quantity }}€</span>
+                                    <div class="overflow-y-auto max-h-64"> <!-- Add these classes -->
+                                        <div v-for="(item, index) in cart" :key="item.id" class="flex items-center justify-between py-2 border-b border-gray-300">
+                                            <div class="flex flex-col md:flex-row md:items-center">
+                                                <span class="font-bold text-gray-800 text-lg mr-2">{{ item.name }}</span>
+                                                <span class="text-gray-600">{{ item.quantity }} Stück(e)</span>
+                                                <span class="text-green-500 font-bold ml-2">{{ item.price * item.quantity }}€</span>
+                                            </div>
+                                            <button @click.prevent="removeFromCart(item)" class="inline-flex items-center bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 rounded-lg transition-colors duration-300 ease-in-out">
+                                                <i class="fas fa-trash-alt mr-2"></i>Entfernen
+                                            </button>
                                         </div>
-                                        <button @click.prevent="removeFromCart(item)" class="inline-flex items-center bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 rounded-lg transition-colors duration-300 ease-in-out">
-                                            <i class="fas fa-trash-alt mr-2"></i>Entfernen
-                                        </button>
-                                    </div>
-                                    <!-- Display a message when cart is empty -->
-                                    <div v-if="cart.length === 0" class="text-gray-500 text-center py-4">
-                                        Der Warenkorb ist leer.
+                                        <!-- Display a message when cart is empty -->
+                                        <div v-if="cart.length === 0" class="text-gray-500 text-center py-4">
+                                            Der Warenkorb ist leer.
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
                             <div>
-                                <div class="mt-4 p-4 bg-gray-100 rounded-lg shadow grid grid-cols-3 gap-4">
+                                <div class="p-4 bg-gray-100 rounded-lg shadow grid grid-cols-3 gap-4">
                                     <!-- Numeric Buttons -->
                                     <button v-for="num in [1,2,3,4,5,6,7,8,9,0]" :key="`num-${num}`" @click="addDigit(num)" type="button"
                                             class="inline-flex items-center justify-center font-bold py-4 px-4 rounded-lg text-lg md:text-xl"
